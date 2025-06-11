@@ -1,6 +1,7 @@
 from typing import Optional
 from data.forma_pagamento_model import FormaPagamento
 from data.forma_pagamento_sql import *
+from data.produto_sql import EXCLUIR_POR_ID
 from data.util import get_connection
 
 
@@ -31,3 +32,10 @@ def obter_todas() -> list[FormaPagamento]:
             nome=row["nome"], 
             desconto=row["desconto"])
             for row in rows]
+
+
+def excluir_por_id(id: int) -> bool:
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(EXCLUIR_POR_ID, (id,))
+        return (cursor.rowcount > 0)
